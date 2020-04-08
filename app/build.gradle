@@ -1,0 +1,234 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion build_versions.target_sdk
+    buildToolsVersion build_versions.build_tools_sdk
+
+    defaultConfig {
+        applicationId "com.wangmh.mhproject"
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
+        versionCode build_versions.version_code
+        versionName build_versions.version_name
+
+        multiDexEnabled true
+
+//        buildConfigField "String", "GIT_SHA", "\"${commitSha()}\""
+        buildConfigField "String", "BUILD_DATE", "\"${buildDate()}\""
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file("../debug.keystore")
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+        }
+        release {
+            storeFile file("../selfservicesupermarket.jks")
+            storePassword "123456"
+            keyAlias "selfservicesupermarket"
+            keyPassword "123456"
+        }
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            zipAlignEnabled false
+            shrinkResources false
+            debuggable true
+            signingConfig signingConfigs.debug
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            minifyEnabled false
+            zipAlignEnabled false
+            shrinkResources false
+            debuggable true //当前版本打开debug日志
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions "default"
+    productFlavors {
+        develop {
+//            resValue "string", "app_name", "小特助手dev"
+            versionNameSuffix "-Dev"
+            applicationIdSuffix ".dev"
+
+            buildConfigField "String", "BASE_URL", "\"https://aimart-public.sicaudm.com/\""
+            buildConfigField "String", "BASE_H5_URL", "\"https://aimart-public.sicaudm.com/\""
+
+            manifestPlaceholders = [
+                    PACKAGE_NAME : "com.zkj.aimart.dev"
+            ]
+        }
+        prod {
+//            resValue "string", "app_name", "小特助手"
+
+            buildConfigField "String", "BASE_URL", "\"https://aimart.zkj.com/\""
+            buildConfigField "String", "BASE_H5_URL", "\"https://aimart.zkj.com/\""
+
+            manifestPlaceholders = [
+                    PACKAGE_NAME : "com.zkj.aimart",
+            ]
+        }
+    }
+
+    androidExtensions {
+        experimental = true
+    }
+
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
+
+    compileOptions {
+        sourceCompatibility build_versions.jvmTarget
+        targetCompatibility build_versions.jvmTarget
+    }
+    kotlinOptions {
+        jvmTarget = build_versions.jvmTarget
+    }
+
+}
+
+dependencies {
+    // Kotlin
+    implementation deps.kotlin.stdlib
+    // Support
+    implementation deps.x.multidex
+    implementation deps.x.design
+    implementation deps.x.android_ktx
+    implementation deps.x.app_compat
+    implementation deps.x.recyclerview
+    implementation deps.x.constraintlayout
+    implementation deps.x.viewpager2
+
+    // Dagger2
+    implementation deps.dagger.runtime
+    kapt deps.dagger.compiler
+    implementation deps.dagger.android
+    implementation deps.dagger.android_support
+    kapt deps.dagger.android_processor
+
+    // RxJava2
+    implementation deps.rx.java
+    implementation deps.rx.kotlin
+    implementation deps.rx.android
+
+    // AutoDispose
+    implementation deps.autodispose.runtime
+    implementation deps.autodispose.lifecycle
+//    implementation deps.autodispose.lifecycle_ktx
+    implementation deps.autodispose.android
+//    implementation deps.autodispose.android_ktx
+    implementation deps.autodispose.android_arch
+//    implementation deps.autodispose.android_arch_ktx
+
+    // OkIO
+    implementation deps.okio
+    // OkHttp
+    implementation deps.okhttp.runtime
+    implementation deps.okhttp.logging_interceptor
+
+    // Retrofit
+    implementation deps.retrofit.runtime
+    implementation deps.retrofit.adapter_rxjava
+    implementation deps.retrofit.converter_moshi
+
+    // Timber
+    implementation deps.timber
+
+    // Arch Lifecycle
+    implementation deps.lifecycle.runtime
+    implementation deps.lifecycle.extensions
+    implementation deps.lifecycle.java8
+    kapt deps.lifecycle.compiler
+
+    // Moshi - JSON library
+    implementation deps.moshi.runtime
+    kapt deps.moshi.kotlin_codegen
+
+    // xcodescanner_zbar
+    implementation deps.xcodescanner
+
+    // AMap
+    implementation deps.amap.map
+    implementation deps.amap.location
+
+    // AndroidAutoSize
+    implementation deps.autosize
+
+    // RxPermissions
+    implementation deps.rxpermissions
+
+    // BaseRecyclerViewAdapterHelper
+    implementation deps.recyclerviewadapter
+
+    // SmartRefreshLayout && SmartRefreshHeader
+    implementation deps.smartrefresh.layout
+    implementation deps.smartrefresh.header
+
+    // Android Picker View
+    implementation deps.pickerview
+
+    // xinge push
+    implementation deps.xg.xg
+    implementation deps.xg.jg
+    implementation deps.xg.wup
+    implementation deps.xg.mid
+    implementation deps.xg.xiaomi
+    implementation deps.xg.meizu
+    implementation deps.xg.huawei
+
+    // WebView框架
+//    implementation project(':shangouh5module')
+
+    implementation 'com.yanzhenjie:permission:1.0.8'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation deps.qrcode_zxing
+//    implementation deps.qrcode_zbar
+
+    implementation deps.glide.glide
+    kapt deps.glide.compiler
+
+    implementation deps.numberbutton
+    implementation deps.androidutilcode
+
+    //蒲公英sdk主要是更新
+    implementation deps.updatesdk
+
+    implementation project(':baseLib')
+    implementation project(':mainLib')
+    implementation project(':userLib')
+}
+
+//def commitSha() {
+//    def value = ''
+//    try {
+//        def git = new File(project.rootDir, ".git")
+//        def head = new File(git, "HEAD")
+//        def ref = new File(git, head.text
+//                .replace("\n", "")
+//                .split(" ")[1])
+//        value = ref.text.substring(0, 7)
+//
+//        // value = 'git rev-parse --short HEAD'.execute([], project.rootDir).printText.trim()
+//    } catch (Exception e) {
+//        e.printStackTrace()
+//    }
+//    return value
+//}
+
+static def buildDate() {
+    return new Date().format("yyyy-MM-dd")
+}

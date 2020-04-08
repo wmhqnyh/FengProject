@@ -1,0 +1,166 @@
+/**
+ * Shared file between builds so that they can all use the same dependencies and
+ * maven repositories.
+ **/
+
+ext.deps = [:]
+
+def versions = [
+        android_gradle_plugin: '3.6.2',
+        kotlin               : '1.3.50',
+        support              : '1.0.2',
+        design               : '1.0.0',
+        recyclerview         : '1.0.0',
+        constraintlayout     : '1.1.3',
+        viewpager2           : '1.0.0-alpha06',
+        dagger               : '2.23.1',
+        rxjava               : '2.2.8',
+        rxandroid            : '2.1.1',
+        rxkotlin             : '2.3.0',
+        autodispose          : '1.3.0',
+        okio                 : '2.1.0',
+        okhttp               : '3.12.3', //https://github.com/square/okhttp/issues/4746
+        retrofit             : '2.5.0',
+        timber               : '4.7.1',
+        lifecycle            : '2.0.0',
+        moshi                : '1.8.0',
+        junit                : '4.12',
+        xcodescanner         : '1.1.10',
+        autosize             : '1.1.2',
+        rxpermissions        : '0.10.2',
+        recyclerviewadapter  : '2.9.45-androidx',
+        smartrefresh         : '1.1.0-andx-10',
+        qrcode_zxing         : '1.3.6',
+        qrcode_zbar          : '1.3.7',
+        glide                : '4.9.0'
+]
+
+def deps = [:]
+deps.android_gradle_plugin = "com.android.tools.build:gradle:$versions.android_gradle_plugin"
+deps.junit = "junit:junit:$versions.junit"
+
+deps.kotlin = [
+        plugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin",
+        stdlib: "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin"
+]
+
+deps.x = [
+        multidex        : "androidx.multidex:multidex:2.0.1",
+        design          : "com.google.android.material:material:1.0.0",
+        app_compat      : "androidx.appcompat:appcompat:$versions.support",
+        recyclerview    : "androidx.recyclerview:recyclerview:1.0.0",
+        constraintlayout: "androidx.constraintlayout:constraintlayout:1.1.3",
+        viewpager2      : "androidx.viewpager2:viewpager2:$versions.viewpager2",
+        android_ktx     : 'androidx.core:core-ktx:1.0.1'
+]
+
+deps.dagger = [
+        runtime          : "com.google.dagger:dagger:$versions.dagger",
+        compiler         : "com.google.dagger:dagger-compiler:$versions.dagger",
+        android          : "com.google.dagger:dagger-android:$versions.dagger",
+        android_support  : "com.google.dagger:dagger-android-support:$versions.dagger",
+        android_processor: "com.google.dagger:dagger-android-processor:$versions.dagger"
+]
+
+deps.rx = [
+        java   : "io.reactivex.rxjava2:rxjava:$versions.rxjava",
+        android: "io.reactivex.rxjava2:rxandroid:$versions.rxandroid",
+        kotlin : "io.reactivex.rxjava2:rxkotlin:$versions.rxkotlin"
+]
+
+deps.autodispose = [
+        runtime     : "com.uber.autodispose:autodispose:$versions.autodispose",
+        lifecycle   : "com.uber.autodispose:autodispose-lifecycle:$versions.autodispose",
+        android     : "com.uber.autodispose:autodispose-android:$versions.autodispose",
+        android_arch: "com.uber.autodispose:autodispose-android-archcomponents:$versions.autodispose",
+]
+
+deps.okio = "com.squareup.okio:okio:$versions.okio"
+
+deps.okhttp = [
+        runtime            : "com.squareup.okhttp3:okhttp:$versions.okhttp",
+        logging_interceptor: "com.squareup.okhttp3:logging-interceptor:$versions.okhttp"
+]
+
+deps.retrofit = [
+        runtime        : "com.squareup.retrofit2:retrofit:$versions.retrofit",
+        adapter_rxjava : "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit",
+        converter_moshi: "com.squareup.retrofit2:converter-moshi:$versions.retrofit"
+]
+
+deps.timber = "com.jakewharton.timber:timber:$versions.timber"
+
+deps.lifecycle = [
+        runtime      : "androidx.lifecycle:lifecycle-runtime:$versions.lifecycle",
+        extensions   : "androidx.lifecycle:lifecycle-extensions:$versions.lifecycle",
+        java8        : "androidx.lifecycle:lifecycle-common-java8:$versions.lifecycle",
+        compiler     : "androidx.lifecycle:lifecycle-compiler:$versions.lifecycle",
+        viewmodel_ktx: "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.lifecycle",
+]
+
+deps.moshi = [
+        runtime       : "com.squareup.moshi:moshi:$versions.moshi",
+        adapters      : "com.squareup.moshi:moshi-adapters:$versions.moshi",
+        kotlin_codegen: "com.squareup.moshi:moshi-kotlin-codegen:$versions.moshi"
+]
+
+deps.xcodescanner = "cn.simonlee.xcodescanner:zbar:$versions.xcodescanner"
+deps.amap = [
+        map     : "com.amap.api:3dmap:5.0.0",
+        location: "com.amap.api:location:3.3.0"
+]
+
+deps.autosize = "me.jessyan:autosize:$versions.autosize"
+deps.rxpermissions = "com.github.tbruyelle:rxpermissions:$versions.rxpermissions"
+deps.recyclerviewadapter = "com.github.CymChad:BaseRecyclerViewAdapterHelper:$versions.recyclerviewadapter"
+deps.smartrefresh = [
+        layout: "com.scwang.smartrefresh:SmartRefreshLayout:$versions.smartrefresh",
+        header: "com.scwang.smartrefresh:SmartRefreshHeader:$versions.smartrefresh"
+]
+deps.qrcode_zxing = "cn.bingoogolapple:bga-qrcode-zxing:$versions.qrcode_zxing"
+//deps.qrcode_zbar = "cn.bingoogolapple:bga-qrcode-zbar:$versions.qrcode_zbar"
+
+deps.pickerview = "cn.carbswang.android:NumberPickerView:1.2.0"
+
+deps.xg = [
+        xg    : "com.tencent.xinge:xinge:4.3.5-release",
+        jg    : "com.tencent.jg:jg:1.1",
+        wup   : "com.tencent.wup:wup:1.0.0.E-Release",
+        mid   : "com.tencent.mid:mid:4.0.7-Release",
+        xiaomi: "com.tencent.xinge:mipush:4.3.2-xiaomi-release",
+        meizu : "com.tencent.xinge:xgmz:4.3.2-meizu-release",
+        huawei: "com.tencent.xinge:xghw:4.3.2-huawei-release"
+]
+
+deps.glide = [
+        glide   : "com.github.bumptech.glide:glide:$versions.glide",
+        compiler: "com.github.bumptech.glide:compiler:$versions.glide"
+]
+
+deps.numberbutton = 'ren.qinc.numberbutton:numberbutton:0.0.1'
+deps.androidutilcode = 'com.blankj:utilcodex:1.24.7'
+deps.updatesdk = 'com.pgyersdk:sdk:3.0.5'
+
+ext.deps = deps
+ext.build_versions = [
+        min_sdk     : 19,
+        target_sdk  : 28,
+        version_code: 10007,
+        version_name: "0.1.7",
+        jvmTarget   : '1.8',
+        build_tools_sdk : "28.0.3"
+]
+
+
+static def addRepos(RepositoryHandler handler) {
+    handler.google()
+    handler.mavenCentral()
+    handler.jcenter() { url "https://jcenter.bintray.com/" }
+    handler.maven { url "https://raw.githubusercontent.com/Pgyer/mvn_repo_pgyer/master" }
+    handler.maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    handler.maven { url "https://kotlin.bintray.com/kotlinx/" }
+    handler.maven { url "https://jitpack.io" }
+    // For kotlinx-metadata-jvm used by Room 2.1.0 (KT-27991)
+}
+
+ext.addRepos = this.&addRepos
