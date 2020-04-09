@@ -12,3 +12,10 @@
 /captures
 .externalNativeBuild
 .cxx
+/.idea/checkstyle-idea.xml
+/.idea/vcs.xml
+/.idea/runConfigurations.xml
+/.idea/gradle.xml
+/.idea/misc.xml
+/.idea/smartfox_info.xml
+/.idea/

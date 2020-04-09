@@ -16,72 +16,86 @@ android {
 
         multiDexEnabled true
 
-//        buildConfigField "String", "GIT_SHA", "\"${commitSha()}\""
+        buildConfigField "String", "GIT_SHA", "\"${commitSha()}\""
         buildConfigField "String", "BUILD_DATE", "\"${buildDate()}\""
+
+        sourceSets {
+            main {
+                jniLibs.srcDirs = ['libs']
+            }
+        }
+
+        ndk {
+            abiFilters 'armeabi'
+        }
+
+        android.applicationVariants.all { variant ->
+            renameAPK(variant, defaultConfig)
+        }
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     signingConfigs {
         debug {
-            storeFile file("../debug.keystore")
-            storePassword "android"
-            keyAlias "androiddebugkey"
-            keyPassword "android"
+//            storeFile file("../debug.keystore")
+//            storePassword "android"
+//            keyAlias "androiddebugkey"
+//            keyPassword "android"
         }
-        release {
-            storeFile file("../selfservicesupermarket.jks")
-            storePassword "123456"
-            keyAlias "selfservicesupermarket"
-            keyPassword "123456"
-        }
+//        release {
+//            storeFile file("../debug.keystore")
+//            storePassword "android"
+//            keyAlias "androiddebugkey"
+//            keyPassword "android"
+//        }
     }
 
-    buildTypes {
-        debug {
-            minifyEnabled false
-            zipAlignEnabled false
-            shrinkResources false
-            debuggable true
-            signingConfig signingConfigs.debug
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-
-        release {
-            minifyEnabled false
-            zipAlignEnabled false
-            shrinkResources false
-            debuggable true //当前版本打开debug日志
-            signingConfig signingConfigs.release
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
+//    buildTypes {
+//        debug {
+//            minifyEnabled false
+//            zipAlignEnabled false
+//            shrinkResources false
+//            debuggable true
+//            signingConfig signingConfigs.debug
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//        }
+//
+//        release {
+//            minifyEnabled false
+//            zipAlignEnabled false
+//            shrinkResources false
+//            debuggable true //当前版本打开debug日志
+//            signingConfig signingConfigs.release
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//        }
+//    }
 
     flavorDimensions "default"
-    productFlavors {
-        develop {
-//            resValue "string", "app_name", "小特助手dev"
-            versionNameSuffix "-Dev"
-            applicationIdSuffix ".dev"
-
-            buildConfigField "String", "BASE_URL", "\"https://aimart-public.sicaudm.com/\""
-            buildConfigField "String", "BASE_H5_URL", "\"https://aimart-public.sicaudm.com/\""
-
-            manifestPlaceholders = [
-                    PACKAGE_NAME : "com.zkj.aimart.dev"
-            ]
-        }
-        prod {
-//            resValue "string", "app_name", "小特助手"
-
-            buildConfigField "String", "BASE_URL", "\"https://aimart.zkj.com/\""
-            buildConfigField "String", "BASE_H5_URL", "\"https://aimart.zkj.com/\""
-
-            manifestPlaceholders = [
-                    PACKAGE_NAME : "com.zkj.aimart",
-            ]
-        }
-    }
+//    productFlavors {
+//        develop {
+////            resValue "string", "app_name", "小特助手dev"
+//            versionNameSuffix "-Dev"
+//            applicationIdSuffix ".dev"
+//
+//            buildConfigField "String", "BASE_URL", "\"https://aimart-public.sicaudm.com/\""
+//            buildConfigField "String", "BASE_H5_URL", "\"https://aimart-public.sicaudm.com/\""
+//
+//            manifestPlaceholders = [
+//                    PACKAGE_NAME : "com.zkj.aimart.dev"
+//            ]
+//        }
+//        prod {
+////            resValue "string", "app_name", "小特助手"
+//
+//            buildConfigField "String", "BASE_URL", "\"https://aimart.zkj.com/\""
+//            buildConfigField "String", "BASE_H5_URL", "\"https://aimart.zkj.com/\""
+//
+//            manifestPlaceholders = [
+//                    PACKAGE_NAME : "com.zkj.aimart",
+//            ]
+//        }
+//    }
 
     androidExtensions {
         experimental = true
@@ -182,13 +196,13 @@ dependencies {
     implementation deps.pickerview
 
     // xinge push
-    implementation deps.xg.xg
-    implementation deps.xg.jg
-    implementation deps.xg.wup
-    implementation deps.xg.mid
-    implementation deps.xg.xiaomi
-    implementation deps.xg.meizu
-    implementation deps.xg.huawei
+//    implementation deps.xg.xg
+//    implementation deps.xg.jg
+//    implementation deps.xg.wup
+//    implementation deps.xg.mid
+//    implementation deps.xg.xiaomi
+//    implementation deps.xg.meizu
+//    implementation deps.xg.huawei
 
     // WebView框架
 //    implementation project(':shangouh5module')
@@ -205,30 +219,46 @@ dependencies {
     implementation deps.androidutilcode
 
     //蒲公英sdk主要是更新
-    implementation deps.updatesdk
+//    implementation deps.updatesdk
 
     implementation project(':baseLib')
     implementation project(':mainLib')
     implementation project(':userLib')
 }
 
-//def commitSha() {
-//    def value = ''
-//    try {
-//        def git = new File(project.rootDir, ".git")
-//        def head = new File(git, "HEAD")
-//        def ref = new File(git, head.text
-//                .replace("\n", "")
-//                .split(" ")[1])
-//        value = ref.text.substring(0, 7)
-//
-//        // value = 'git rev-parse --short HEAD'.execute([], project.rootDir).printText.trim()
-//    } catch (Exception e) {
-//        e.printStackTrace()
-//    }
-//    return value
-//}
+def commitSha() {
+    def value = ''
+    try {
+        def git = new File(project.rootDir, ".git")
+        def head = new File(git, "HEAD")
+        def ref = new File(git, head.text
+                .replace("\n", "")
+                .split(" ")[1])
+        value = ref.text.substring(0, 7)
+
+        // value = 'git rev-parse --short HEAD'.execute([], project.rootDir).printText.trim()
+    } catch (Exception e) {
+        e.printStackTrace()
+    }
+    return value
+}
 
 static def buildDate() {
     return new Date().format("yyyy-MM-dd")
+}
+
+/**
+ * 修改打包apk名称
+ * @param variant
+ * @param defaultConfig
+ * @return
+ */
+def renameAPK(variant, defaultConfig) {
+    variant.outputs.all { output ->
+        def applicationName = "youxuan_helper"
+        applicationName += "_${variant.buildType.name}"
+        def formattedDate = new Date().format('yyyyMMdd')
+        def fileName = applicationName + "_v" + defaultConfig.versionName + "_" + formattedDate + ".apk"
+        outputFileName = fileName
+    }
 }
